@@ -73,5 +73,23 @@ module SamlIdp
     def get_saml_reference_id
       UUID.generate
     end
+
+    def encode_logout_response(opts = {})
+      response_id, reference_id = get_saml_response_id, get_saml_reference_id
+      audience_uri = 'urn:federation:MicrosoftOnline'
+      opt_issuer_uri = 'http://bitium.dev/26'
+      saml_acs_url = 'https://login.microsoftonline.com/login.srf'
+
+      SamlLogoutResponse.new(
+          reference_id,
+          response_id,
+          opt_issuer_uri,
+          saml_request_id,
+          saml_acs_url,
+          algorithm,
+          authn_context_classref
+      ).build
+    end
+
   end
 end
